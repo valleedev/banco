@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Banco de Springfield</title>
+    <style>
+      body {
+          font-family: Arial, sans-serif;
+          background-color: #005f8b;
+          color: #333;
+          margin: 0;
+          padding: 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 100vh;
+      }
+      .card {
+          background-color: #fff;
+          border-radius: 10px;
+          box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+          padding: 20px;
+          width: 300px;
+      }
+      .logo {
+          width: 100px;
+          height: 100px;
+          margin: 0 auto 20px;
+          display: block;
+      }
+      h1, h2 {
+          text-align: center;
+          margin-bottom: 10px;
+      }
+      .info {
+          margin-bottom: 15px;
+      }
+      .balance {
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 10px;
+          padding: 10px;
+          background-color: #f0f0f0;
+          border-radius: 5px;
+      }
+      .footer {
+          font-size: 0.8em;
+          text-align: center;
+          margin-top: 20px;
+          color: #666;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <img
+        src="https://imgs.search.brave.com/OZMNaCAVjshAUCnf0yGlSyoU8Z4DNBvZfHzZuNJG6DU/rs:fit:500:0:0:0/g:ce/aHR0cHM6Ly9tZWRp/YS5nZXR0eWltYWdl/cy5jb20vaWQvMTQ0/NzAxNjczMi9waG90/by9zcHJpbmdmaWVs/ZC1tYXNzYWNodXNl/dHRzLmpwZz9zPTYx/Mng2MTImdz0wJms9/MjAmYz1FMkYyemh1/Z29qTmlYZEpBVGdf/b250Z1FlMm95eG0x/RmhRX0xILWRRMFhR/PQ"
+        alt="Banco de Springfield Logo"
+        class="logo"
+      />
+      <h1 id="name-bank"></h1>
+      <h2 id="sucursal"></h2>
+
+      <div class="info">
+        <p><strong id="titular"></strong></p>
+        <p id="nro_cuenta"></p>
+      </div>
+
+      <div class="balance">
+        <span id="usd"></span>
+        <span id="monto1"></span>
+      </div>
+
+      <div class="balance">
+        <span id="eur"></span>
+        <span id="monto2"></span>
+      </div>
+
+      <div class="footer">
+        <p id="abierta"></p>
+        <p id="nro_banco"></p>
+      </div>
+    </div>
+    <script>
+      fetch('banco.json')
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('Error al cargar el archivo JSON');
+          }
+          return response.json();
+        })
+        .then(data => {
+          document.getElementById('name-bank').innerHTML = `${data.banco}`;
+          document.getElementById('sucursal').innerHTML = `${data.sucursal}`;
+          document.getElementById('titular').innerHTML = `${data.titular}`;
+          document.getElementById('nro_cuenta').innerHTML = `nro cuenta: ${data.nro_cuenta}`;
+          document.getElementById('usd').innerHTML = `${data.saldo[0].moneda}`;
+          document.getElementById('eur').innerHTML = `${data.saldo[1].moneda}`;
+          document.getElementById('monto1').innerHTML = `${data.saldo[0].monto}`;
+          document.getElementById('monto2').innerHTML = `${data.saldo[1].monto}`;
+          document.getElementById('nro_banco').innerHTML = `${data.nro_banco}`;
+          document.getElementById('abierta').innerHTML = `${data.abierto}`;
+        })
+        .catch(error => {
+          console.error('Hubo un problema con la solicitud fetch:', error);
+        });
+    </script>
+    <script src="banco.json"></script>
+  </body>
+</html>
